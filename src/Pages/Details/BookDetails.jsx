@@ -1,11 +1,24 @@
 import React from "react";
 import { useLoaderData, useParams } from "react-router";
 import { FaStarHalfAlt } from "react-icons/fa";
+import { additemtocarttolocalstorage } from "../../../public/LocalStorage";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const MySwal = withReactContent(Swal)
 const BookDetails = () => {
   const data = useLoaderData();
   const { id } = useParams();
   const singleBook = data.find((book) => book.bookId === parseInt(id));
-  console.log(singleBook)
+  // console.log(singleBook)
+  const handleMarkAsRead = id=>{
+    additemtocarttolocalstorage(id)
+    MySwal.fire({
+  title: "Good job!",
+  text: "You clicked the button!",
+  icon: "success"
+});
+  }
   const {
     bookName,
     tags,
@@ -45,7 +58,7 @@ const BookDetails = () => {
           <p>Number of Pages : <span className="font-bold text-md">{totalPages}</span></p>
           <p>Publisher : <span className="font-bold text-md">{publisher}</span></p>
           <p>Year of Publishing : <span className="font-bold text-md">{yearOfPublishing}</span></p>
-          <button className="btn ">Read</button>
+          <button onClick={()=>handleMarkAsRead(bookId)} className="btn ">Read</button>
           <button className="btn btn-primary">WishList</button>
         </div>
       </div>
